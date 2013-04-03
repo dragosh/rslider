@@ -1,0 +1,44 @@
+
+
+/* RSlider Css Rules */
+
+/*Slider Container*/
+/*.rs-wrapper{
+    width: 800px;
+    height: 450px;
+    margin: 0 auto;    
+    position: relative;
+    overflow: hidden;
+}*/
+/*Slider Nav*/
+.rs-wrapper .controls{
+    background: rgba(127,127,127,.5);
+    color: white;
+}
+/*.rs-wrapper .rs-nav .prev{left:0;}
+.rs-wrapper .rs-nav .next{right:0;}*/
+
+/*Progress bar*/
+.rs-progress{
+    
+
+}
+.rs-progress .bar{
+    background: #000;    
+}
+
+/*Slider*/
+.rs-slider{    
+    margin: 0; padding: 0;
+    list-style-type: none;    
+}
+
+/*Slides*/
+
+.rs-slider .rs-slide img{
+
+    display: inline-block;
+    max-height:100%;
+    max-width:100%;
+}
+
