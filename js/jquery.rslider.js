@@ -91,10 +91,12 @@
             pause: function() {
                 clearInterval(this._interval);
                 this._interval = 0;
+                this._isPlaying = false;
             },
             // Start the slideshow
             play: function() {
                 if(typeof this.options.autoplay === 'number' && this.options.autoplay > 0) {
+                    this._isPlaying = true;
                     this._interval = setInterval(function(){
                         this.slide('next');
                     }.bind(this),this.options.autoplay);
