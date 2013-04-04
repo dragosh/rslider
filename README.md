@@ -6,6 +6,7 @@
 
 ****
 ### TODO:
+* test cases
 * responsiveness
 * video support
 * circular
