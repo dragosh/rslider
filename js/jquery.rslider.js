@@ -116,9 +116,9 @@
                     this.$progress.fadeIn();
                     this.$el.prevAll('.controls').andSelf().hide();
 
-                    var dfd = this.$el.imagesLoaded({
+                    this.$el.imagesLoaded({
                         callback: function(){
-                            this._call('ready');
+                            this._call('ready',this._items);
                             this.$el.trigger(this.options.namespace + ':ready');
                             this.$progress.fadeTo('slow', 0, function() {
                                 this.$el.prevAll('.controls').andSelf().fadeIn();
