@@ -1,6 +1,6 @@
 ;(function ( $, window, document, undefined ) {
 
-    "use strict";
+    'use strict';
 
     var pluginName = 'rslider',
 
@@ -11,6 +11,7 @@
             progressBarWidth:   200,
             progressBarHeight:  5,
             start:              0,
+            controls:           true,
             item:               'li',
             autoplay:           2000,// delay between slides, if 0 then autoplay is stoped
             speed:              500,
@@ -36,7 +37,7 @@
                 //Preload
                 this._preload();
                 //Start once the preloader is done
-                this.$el.one(this.options.namespace + ":ready", function(){
+                this.$el.one(this.options.namespace + ':ready', function(){
 
                     this.play();
 
@@ -44,21 +45,25 @@
                         this.slide(this.options.start);
                     }
                     //Events Listner
-                    //prev
-                    this.$prev.on("click",function(ev) {
-                        this.slide('prev');
-                    }.bind(this));
+                    if(this.options.controls === true) {
+                        //prev
+                        this.$prev.on('click',function(ev) {
+                            this.slide('prev');
+                            ev.preventDefault();
+                        }.bind(this));
 
-                    //next
-                    this.$next.on("click",function(ev) {
-                        this.slide('next');
-                    }.bind(this));
+                        //next
+                        this.$next.on('click',function(ev) {
+                            this.slide('next');
+                            ev.preventDefault();
+                        }.bind(this));
+                    }
 
                     //over & out
-                    this.$el.add('.controls').on("mouseenter mouseleave",function(ev) {
+                    this.$el.add('.controls').on('mouseenter mouseleave',function(ev) {
                         switch(ev.type) {
                             case 'mouseenter': this.pause();
-                            break;
+                                break;
                             default: this.play();
                         }
                     }.bind(this));
@@ -76,13 +81,13 @@
                 } else if(typeof dir === 'number') {
                     //if is valid slide number
                     if( dir < 0 || dir > this._items) {
-                        throw new Error("Unknown slide number");
+                        throw new Error('Unknown slide number');
                     } else{
                         this._current = dir;
                     }
                 } else{
                     //throw error
-                    throw new Error("Unknown slide number");
+                    throw new Error('Unknown slide number');
                 }
                 this._transition();
 
@@ -113,9 +118,9 @@
 
                     var dfd = this.$el.imagesLoaded({
                         callback: function(){
-                            this._callback('ready');
+                            this._call('ready');
                             this.$el.trigger(this.options.namespace + ':ready');
-                            this.$progress.fadeTo("slow", 0, function() {
+                            this.$progress.fadeTo('slow', 0, function() {
                                 this.$el.prevAll('.controls').andSelf().fadeIn();
                             }.bind(this));
 
@@ -154,7 +159,9 @@
                 // create progress bar
                 this._createProgress();
                 // create controls
-                this._createControls();
+                if(this.options.controls === true) {
+                    this._createControls();
+                }
                 //set slider width
                 this.$el.width(this._itemW * this._items);
 
@@ -174,7 +181,7 @@
                     'class': this.options.namespace + '-progress'
                 });
                 if( $.isFunction( $.fn.imagesLoaded ) ) {
-                    var $progresbar = $('<div class="bar" />')
+                    $('<div class="bar" />')
                         .height(this.options.progressBarHeight)
                         .width(0)
                         .appendTo(this.$progress);
@@ -212,22 +219,22 @@
             // transition method
             _transition: function() {
 
-                this._callback('start',this._current);
+                this._call('start',this._current);
                 this.$el.trigger(this.options.namespace + ':start');
                 this.$el.stop().animate({
                     marginLeft: -(this._current * this._itemW)
                 }, this.options.speed, this.options.ease,
                     function(){
-                        this._callback('end',this._current);
+                        this._call('end',this._current);
                         this.$el.trigger(this.options.namespace + ':end');
                     }.bind(this)
                 );
             },
             // Callback function definition
-            _callback: function(fn,options) {
+            _call: function(fn) {
                 var clb = 'on'+fn.charAt(0).toUpperCase() + fn.slice(1); //append the on prefix for callback functions
                 var args = Array.prototype.slice.call( arguments, 1 );
-                if (typeof this.options[clb] == 'function') { // make sure the callback is a function
+                if (typeof this.options[clb] === 'function') { // make sure the callback is a function
                     args.push(this.el,this);
                     this.options[clb].apply(this, args ); // brings the scope to the callback
                 }
@@ -290,7 +297,7 @@
                 }
                 // Allow instances to be destroyed via the 'destroy' method
                 if (options === 'destroy') {
-                  $.data(this, 'plugin_' + pluginName, null);
+                    $.data(this, 'plugin_' + pluginName, null);
                 }
             });
 
